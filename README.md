@@ -4,6 +4,12 @@
 
 ---
 
+## 🌐 Deployment
+
+This app is deployed in Vercel under the link: [CineVerse on Vercel](https://cineverse-ruddy-three.vercel.app/)
+
+---
+
 ## ✨ Features
 
 ### 🎥 Cinematic Trailer Integration
@@ -71,12 +77,6 @@ src/
 ├── App.jsx                  # Routing setup
 └── index.css                # Global styles & CSS variables
 ```
-
----
-
-## 🌐 Deployment
-
-This app is deployed in Vercel under the link: [CineVerse on Vercel](https://cineverse-ruddy-three.vercel.app/)
 
 ---
 
