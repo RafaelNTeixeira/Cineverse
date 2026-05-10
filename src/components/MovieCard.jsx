@@ -5,47 +5,31 @@ import StarRating from './StarRating';
 export default function MovieCard({ review, index = 0 }) {
   const navigate = useNavigate();
   const isGame = review.mediaType === 'game';
+  const isTv   = review.mediaType === 'tv';
   const isFullUrl = review.posterPath?.startsWith('http');
-  const href = `/${review.mediaType}/${review.tmdbId}`;
   const imgSrc = isFullUrl ? review.posterPath : (review.posterPath ? posterUrl(review.posterPath, 'md') : null);
 
-  const badgeLabel = isGame ? '🎮 GAME' : review.mediaType === 'tv' ? '⬛ SERIES' : '▶ FILM';
-  const badgeColor = isGame ? '#a78bfa' : review.mediaType === 'tv' ? '#78b4c8' : 'var(--color-accent)';
-  const badgeBg = isGame ? 'rgba(167,139,250,0.15)' : review.mediaType === 'tv' ? 'rgba(120,180,200,0.12)' : 'var(--color-accent-dim)';
+  return isGame
+    ? <GameCard review={review} imgSrc={imgSrc} index={index} navigate={navigate} />
+    : <CinemaCard review={review} imgSrc={imgSrc} isTv={isTv} index={index} navigate={navigate} />;
+}
 
-  const ratingColor = review.rating >= 4
-    ? 'var(--color-accent)'
-    : review.rating >= 3
-    ? '#78b4a0'
-    : '#c07070';
-
+/* -- Cinema / TV Card --------------------------------------- */
+function CinemaCard({ review, imgSrc, isTv, index, navigate }) {
+  const ratingColor = review.rating >= 4 ? 'var(--color-cinema)' : review.rating >= 3 ? '#78b4a0' : '#c07070';
   return (
     <div
-      onClick={() => navigate(href)}
-      className="card"
-      style={{
-        cursor: 'pointer',
-        position: 'relative',
-        animation: 'fadeInUp 0.5s ease both',
-        animationDelay: `${index * 0.06}s`,
-        overflow: 'hidden',
-      }}
+      onClick={() => navigate(`/${review.mediaType}/${review.tmdbId}`)}
+      className="card card-cinema"
+      style={{ cursor: 'pointer', animation: 'fadeInUp 0.5s ease both', animationDelay: `${index * 0.055}s` }}
     >
       {/* Poster */}
       <div style={{ position: 'relative', aspectRatio: '2/3', overflow: 'hidden' }}>
         {imgSrc ? (
-          <img
-            src={imgSrc}
-            alt={review.title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transition: 'transform 0.5s ease',
-            }}
-            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+          <img src={imgSrc} alt={review.title} loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+            onMouseEnter={(e) => e.target.style.transform = 'scale(1.06)'}
             onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-            loading="lazy"
           />
         ) : (
           <div className="poster-placeholder" style={{ height: '100%' }}>🎬</div>
@@ -53,106 +37,137 @@ export default function MovieCard({ review, index = 0 }) {
 
         {/* Hover overlay */}
         <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to top, rgba(7,7,15,0.96) 0%, rgba(7,7,15,0.4) 40%, transparent 70%)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '1rem',
-          opacity: 0,
-          transition: 'opacity 0.3s ease',
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(7,7,15,0.97) 0%, rgba(7,7,15,0.35) 40%, transparent 65%)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+          padding: '1rem', opacity: 0, transition: 'opacity 0.3s ease',
         }}
         onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
         onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
         >
-          <span style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--color-accent)',
-            marginBottom: '0.4rem',
-          }}>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-cinema)', marginBottom: '0.35rem' }}>
             View Review →
           </span>
           {review.reviewText && (
-            <p style={{
-              fontSize: '0.8rem',
-              color: 'rgba(242,237,228,0.85)',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              margin: 0,
-              lineHeight: 1.5,
-            }}>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(240,236,248,0.82)', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, lineHeight: 1.45 }}>
               {review.reviewText}
             </p>
           )}
         </div>
 
-        {/* Badges */}
-        <div style={{
-          position: 'absolute',
-          top: '0.75rem',
-          left: '0.75rem',
-          display: 'flex',
-          gap: '0.4rem',
-          flexWrap: 'wrap',
-        }}>
-          <span className="badge" style={{
-            background: 'rgba(7,7,15,0.85)',
-            color: badgeColor,
-            border: `1px solid ${badgeBg}`,
-            fontSize: '0.65rem',
-            letterSpacing: '0.15em',
-            backdropFilter: 'blur(8px)',
-          }}>
-            {badgeLabel}
+        {/* Top badges */}
+        <div style={{ position: 'absolute', top: '0.65rem', left: '0.65rem' }}>
+          <span className={`badge ${isTv ? 'badge-series' : 'badge-cinema'}`}>
+            {isTv ? '⬛ SERIES' : '▶ FILM'}
           </span>
         </div>
 
-        {/* Critic's Choice badge */}
         {review.rating >= 4.5 && (
-          <div style={{
-            position: 'absolute',
-            top: '0.75rem',
-            right: '0.75rem',
-            background: 'var(--color-accent)',
-            color: '#07070f',
-            padding: '0.2rem 0.45rem',
-            borderRadius: '2px',
-            fontSize: '0.6rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-          }}>
-            ★ Critic's Pick
+          <div style={{ position: 'absolute', top: '0.65rem', right: '0.65rem', background: 'var(--color-cinema)', color: '#07070f', padding: '0.18rem 0.4rem', borderRadius: '2px', fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            ★ PICK
           </div>
         )}
-
         {review.recommended && (
-          <div style={{
-            position: 'absolute',
-            bottom: '0.75rem',
-            right: '0.75rem',
-          }}>
-            <span style={{ fontSize: '1.2rem' }} title="Recommended">💚</span>
+          <div style={{ position: 'absolute', bottom: '0.65rem', right: '0.65rem' }}>
+            <span title="Recommended" style={{ fontSize: '1.1rem' }}>💚</span>
           </div>
         )}
       </div>
 
-      {/* Info */}
-      <div style={{ padding: '0.85rem 1rem', background: 'var(--color-bg-card)' }}>
+      {/* Footer */}
+      <div style={{ padding: '0.8rem 0.9rem', background: 'var(--color-bg-card)' }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '0.3rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: '0.02em' }}>
+          {review.title}
+        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <StarRating value={review.rating} readOnly size={12} />
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 600, color: ratingColor }}>
+            {review.rating > 0 ? `${review.rating}/5` : '-'}
+          </span>
+        </div>
+        {review.watchedDate && (
+          <p style={{ fontSize: '0.68rem', color: 'var(--color-text-muted)', marginTop: '0.35rem', letterSpacing: '0.04em' }}>
+            {new Date(review.watchedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* -- Game Card ---------------------------------------------- */
+function GameCard({ review, imgSrc, index, navigate }) {
+  const ratingColor = review.rating >= 4 ? 'var(--color-game)' : review.rating >= 3 ? '#78b4a0' : '#c07070';
+  const platforms = review.genres?.slice(0, 3) || [];
+
+  return (
+    <div
+      onClick={() => navigate(`/game/${review.tmdbId}`)}
+      className="card card-game"
+      style={{ cursor: 'pointer', animation: 'fadeInUp 0.5s ease both', animationDelay: `${index * 0.055}s` }}
+    >
+      {/* 16:9 image section */}
+      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+        {/* Scanline layer */}
+        <div className="scanline-overlay" />
+
+        {imgSrc ? (
+          <img src={imgSrc} alt={review.title} loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+          />
+        ) : (
+          <div className="poster-placeholder" style={{ height: '100%', fontSize: '2.5rem' }}>🎮</div>
+        )}
+
+        {/* Bottom gradient */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(7,7,15,0.92) 0%, transparent 55%)', zIndex: 2, pointerEvents: 'none' }} />
+
+        {/* Top-left badge */}
+        <div style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', zIndex: 4 }}>
+          <span className="badge badge-game">🎮 GAME</span>
+        </div>
+
+        {/* Critic pick */}
+        {review.rating >= 4.5 && (
+          <div style={{ position: 'absolute', top: '0.6rem', right: '0.6rem', zIndex: 4, background: 'var(--color-game)', color: '#07070f', padding: '0.18rem 0.4rem', borderRadius: '2px', fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.12em', fontFamily: 'var(--font-game)', textTransform: 'uppercase' }}>
+            ★ PICK
+          </div>
+        )}
+
+        {/* Recommended */}
+        {review.recommended && (
+          <div style={{ position: 'absolute', bottom: '0.6rem', right: '0.6rem', zIndex: 4 }}>
+            <span title="Recommended" style={{ fontSize: '1.05rem' }}>💚</span>
+          </div>
+        )}
+
+        {/* Hover overlay text */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 3,
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+          padding: '0.75rem', opacity: 0, transition: 'opacity 0.3s ease',
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+        onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
+        >
+          <span style={{ fontFamily: 'var(--font-game)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-game)' }}>
+            VIEW REVIEW →
+          </span>
+        </div>
+      </div>
+
+      {/* Game info footer */}
+      <div style={{ padding: '0.75rem 0.9rem', background: 'var(--color-bg-card)', borderTop: '1px solid rgba(129,140,248,0.1)' }}>
         <h3 style={{
-          fontFamily: 'var(--font-display)',
+          fontFamily: 'var(--font-game)',
           fontSize: '1.05rem',
-          fontWeight: 500,
+          fontWeight: 700,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
           color: 'var(--color-text-primary)',
-          marginBottom: '0.3rem',
-          letterSpacing: '0.02em',
+          marginBottom: '0.4rem',
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -160,34 +175,25 @@ export default function MovieCard({ review, index = 0 }) {
           {review.title}
         </h3>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <StarRating
-            value={review.rating}
-            readOnly
-            size={13}
-          />
-          <span style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '1.05rem',
-            fontWeight: 600,
-            color: ratingColor,
-          }}>
-            {review.rating > 0 ? `${review.rating}/5` : '—'}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+          <StarRating value={review.rating} readOnly size={12} />
+          <span style={{ fontFamily: 'var(--font-game)', fontSize: '1rem', fontWeight: 700, color: ratingColor }}>
+            {review.rating > 0 ? `${review.rating}/5` : '-'}
           </span>
         </div>
 
+        {/* Genre tags as platform-style chips */}
+        {platforms.length > 0 && (
+          <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', marginBottom: '0.3rem' }}>
+            {platforms.map((g) => (
+              <span key={g} className="badge badge-platform">{g}</span>
+            ))}
+          </div>
+        )}
+
         {review.watchedDate && (
-          <p style={{
-            fontSize: '0.72rem',
-            color: 'var(--color-text-muted)',
-            marginTop: '0.4rem',
-            letterSpacing: '0.05em',
-          }}>
-            {new Date(review.watchedDate).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })}
+          <p style={{ fontSize: '0.66rem', color: 'var(--color-text-muted)', letterSpacing: '0.04em', fontFamily: 'var(--font-game)', marginTop: '0.2rem' }}>
+            {new Date(review.watchedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         )}
       </div>

@@ -1,12 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <circle cx="50" cy="50" r="48" fill="#0a0a14" stroke="#d4af37" stroke-width="3"/>
-  <circle cx="50" cy="50" r="8" fill="#d4af37"/>
-  <line x1="50" y1="8" x2="50" y2="22" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="50" y1="78" x2="50" y2="92" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="8" y1="50" x2="22" y2="50" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="78" y1="50" x2="92" y2="50" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="21" y1="21" x2="31" y2="31" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="69" y1="69" x2="79" y2="79" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="79" y1="21" x2="69" y2="31" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
-  <line x1="21" y1="79" x2="31" y2="69" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+  <!-- Outer ring: left half gold, right half violet -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#e2a84b" stroke-width="4.5" stroke-dasharray="145 145" stroke-dashoffset="72"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#818cf8" stroke-width="4.5" stroke-dasharray="145 145" stroke-dashoffset="-73"/>
+  <!-- Inner fill -->
+  <circle cx="50" cy="50" r="20" fill="#0d0d1a"/>
+  <!-- Play triangle (centre) -->
+  <polygon points="44,41 44,59 62,50" fill="#e2a84b"/>
+  <!-- Reel holes: top/bottom gold, left/right violet -->
+  <circle cx="50" cy="18" r="5.5" fill="none" stroke="#e2a84b" stroke-width="3"/>
+  <circle cx="50" cy="82" r="5.5" fill="none" stroke="#e2a84b" stroke-width="3"/>
+  <circle cx="18" cy="50" r="5.5" fill="none" stroke="#818cf8" stroke-width="3"/>
+  <circle cx="82" cy="50" r="5.5" fill="none" stroke="#818cf8" stroke-width="3"/>
+  <circle cx="27" cy="27" r="5.5" fill="none" stroke="#b09ad0" stroke-width="3"/>
+  <circle cx="73" cy="73" r="5.5" fill="none" stroke="#b09ad0" stroke-width="3"/>
 </svg>

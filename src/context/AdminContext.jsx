@@ -7,14 +7,14 @@ export const AdminProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const session = sessionStorage.getItem('cineverse_admin');
+    const session = sessionStorage.getItem('reelplay_admin');
     if (session === 'true') setIsAdmin(true);
   }, []);
 
   const login = (password) => {
     if (password === ADMIN_PASSWORD) {
       setIsAdmin(true);
-      sessionStorage.setItem('cineverse_admin', 'true');
+      sessionStorage.setItem('reelplay_admin', 'true');
       return true;
     }
     return false;
@@ -22,7 +22,7 @@ export const AdminProvider = ({ children }) => {
 
   const logout = () => {
     setIsAdmin(false);
-    sessionStorage.removeItem('cineverse_admin');
+    sessionStorage.removeItem('reelplay_admin');
   };
 
   return (

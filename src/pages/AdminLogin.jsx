@@ -9,9 +9,7 @@ export default function AdminLogin() {
   const [attempts, setAttempts] = useState(0);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isAdmin) navigate('/');
-  }, [isAdmin, navigate]);
+  useEffect(() => { if (isAdmin) navigate('/'); }, [isAdmin, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +19,7 @@ export default function AdminLogin() {
       navigate('/');
     } else {
       setAttempts((a) => a + 1);
-      setError('Incorrect password. The projection booth remains locked.');
+      setError('Incorrect password. Access denied.');
       setPassword('');
     }
   };
@@ -29,56 +27,38 @@ export default function AdminLogin() {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '2rem',
       background: `
-        radial-gradient(ellipse at 30% 50%, rgba(var(--color-accent-rgb), 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 25% 50%, rgba(226,168,75,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 50%, rgba(129,140,248,0.04) 0%, transparent 55%),
         var(--color-bg)
       `,
     }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '400px',
-        animation: 'scaleIn 0.4s ease',
-      }}>
+      <div style={{ width: '100%', maxWidth: '400px', animation: 'scaleIn 0.4s ease' }}>
+
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <div style={{
-            fontSize: '3rem',
-            marginBottom: '1rem',
-            filter: 'drop-shadow(0 0 20px var(--color-accent-glow))',
-          }}>
-            🎬
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          {/* Dual icon */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', fontSize: '2.2rem', marginBottom: '1rem' }}>
+            <span style={{ filter: 'drop-shadow(0 0 12px rgba(226,168,75,0.5))' }}>🎬</span>
+            <span style={{ filter: 'drop-shadow(0 0 12px rgba(129,140,248,0.5))' }}>🎮</span>
           </div>
-          <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '2rem',
-            fontWeight: 400,
-            letterSpacing: '0.06em',
-            color: 'var(--color-text-primary)',
-            marginBottom: '0.5rem',
-          }}>
-            Projection Booth
+          <h1 style={{ fontFamily: 'var(--font-label)', fontSize: '2rem', letterSpacing: '0.28em', color: 'var(--color-text-primary)', marginBottom: '0.3rem' }}>
+            REELPLAY
           </h1>
-          <p style={{
-            fontSize: '0.85rem',
-            color: 'var(--color-text-muted)',
-            letterSpacing: '0.05em',
-          }}>
-            Authorized personnel only
+          <p style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+            Film · Series · Games
+          </p>
+          <div style={{ width: '40px', height: '1px', background: 'linear-gradient(to right, var(--color-cinema), var(--color-game))', margin: '0.75rem auto 0' }} />
+          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '0.75rem', letterSpacing: '0.04em' }}>
+            Reviewer access only
           </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <div style={{
-            background: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            padding: '2rem',
-          }}>
+          <div style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '2rem' }}>
             <div className="form-group" style={{ marginBottom: '1.5rem' }}>
               <label className="form-label">Password</label>
               <input
@@ -93,69 +73,37 @@ export default function AdminLogin() {
             </div>
 
             {error && (
-              <p style={{
-                color: '#e05555',
-                fontSize: '0.82rem',
-                marginBottom: '1rem',
-                fontStyle: 'italic',
-              }}>
+              <p style={{ color: '#e05555', fontSize: '0.82rem', marginBottom: '1rem', fontStyle: 'italic' }}>
                 {error}
               </p>
             )}
-
             {attempts >= 5 && (
-              <p style={{
-                color: '#e05555',
-                fontSize: '0.82rem',
-                marginBottom: '1rem',
-              }}>
-                Too many failed attempts. Please refresh the page to try again.
+              <p style={{ color: '#e05555', fontSize: '0.82rem', marginBottom: '1rem' }}>
+                Too many failed attempts. Refresh to try again.
               </p>
             )}
 
-            <button
-              type="submit"
-              className="btn btn-primary"
+            <button type="submit" className="btn btn-primary"
               disabled={!password || attempts >= 5}
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                opacity: !password || attempts >= 5 ? 0.5 : 1,
-              }}
+              style={{ width: '100%', justifyContent: 'center', opacity: (!password || attempts >= 5) ? 0.5 : 1 }}
             >
-              Enter the Booth
+              Sign In
             </button>
           </div>
         </form>
 
-        <p style={{
-          textAlign: 'center',
-          marginTop: '2rem',
-          fontSize: '0.78rem',
-          color: 'var(--color-text-muted)',
-        }}>
-          <span
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() => navigate('/')}
-          >
-            ← Back to the lobby
+        <p style={{ textAlign: 'center', marginTop: '1.75rem', fontSize: '0.76rem', color: 'var(--color-text-muted)' }}>
+          <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/')}>
+            ← Back to reviews
           </span>
         </p>
 
-        {/* Decorative film strip */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '4px',
-          marginTop: '2.5rem',
-          opacity: 0.15,
-        }}>
-          {Array.from({ length: 12 }).map((_, i) => (
+        {/* Decorative dual strip */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '3px', marginTop: '2.5rem', opacity: 0.12 }}>
+          {Array.from({ length: 14 }).map((_, i) => (
             <div key={i} style={{
-              width: '24px',
-              height: '16px',
-              background: 'var(--color-text-primary)',
-              borderRadius: '2px',
+              width: '20px', height: '14px', borderRadius: '2px',
+              background: i % 2 === 0 ? 'var(--color-cinema)' : 'var(--color-game)',
             }} />
           ))}
         </div>

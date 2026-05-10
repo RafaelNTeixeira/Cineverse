@@ -56,7 +56,7 @@ const toDb = (r) => ({
 });
 
 // -- LocalStorage fallback --------------------------------------
-const LS_KEY = 'cineverse_reviews';
+const LS_KEY = 'reelplay_reviews';
 const ls = {
   all: () => { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } },
   set: (data) => localStorage.setItem(LS_KEY, JSON.stringify(data)),
