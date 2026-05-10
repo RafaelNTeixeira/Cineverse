@@ -1,4 +1,4 @@
-# 🎬 CineVerse - A Cinematic Review Journal
+# 🎬 ReelPlay - Films, Tv-Series & Games
 
 > A personal movie & TV review website with a cinematic, immersive experience. Powered by the TMDB API.
 
@@ -6,7 +6,7 @@
 
 ## 🌐 Deployment
 
-This app is deployed in Vercel under the link: [CineVerse on Vercel](https://cineverse-ruddy-three.vercel.app/)
+This app is deployed in Vercel under the link: [ReelPlay on Vercel](https://cineverse-ruddy-three.vercel.app/)
 
 ---
 
